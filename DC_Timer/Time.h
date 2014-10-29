@@ -9,7 +9,7 @@
 
 #include <Arduino.h>
 // eww
-#include <Adafruit_RGBLCDShield.h>
+// #include <Adafruit_RGBLCDShield.h>
 
 
 class Time {
@@ -24,31 +24,37 @@ class Time {
     } // constructor
     
     
+    Time(byte _hh, byte _mm) {
+      set(_hh, _mm);
+    } // constructor (hh, mm);
+    
+    
     // secs can be arbitrarily huge, but assumes 0 was 00:00:00
     void set(unsigned long secs) {
       Serial.print("Time_HHMM set: ");
-      Serial.println(secs);      long tod = secs % (24*3600);
+      Serial.println(secs);      
+      long tod = secs % (24*3600);
       mm = (tod % 3600) / 60;
       hh = tod / 3600;
     } // set(unsigned long secs)
     
     
-    void set(byte newHh, byte newMm) {
+    void set(byte _hh, byte _mm) {
       Serial.print("Time_HHMM set: ");
-      Serial.print(hh);
+      Serial.print(_hh);
       Serial.print(":");
-       Serial.println(mm);
-      hh = newHh;
-      mm = newMm;
+      Serial.println(_mm);
+      hh = _hh;
+      mm = _mm;
     } // set(byte hh, byte mm)
     
-    
+ /*   
     static void print(Adafruit_RGBLCDShield lcd, unsigned long secs) {
       Time time;
       time.set(secs);
       time.print(lcd);
     } // print()
-
+*/
 
     void print(Adafruit_RGBLCDShield lcd) {      
       Serial.print("Time_HHMM print: ");

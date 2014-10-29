@@ -31,7 +31,9 @@ class RTC {
     
     
     void print(Adafruit_RGBLCDShield lcd) {
-       Time::print(lcd, time());
+      Time temp;
+      temp.set(time());
+      temp.print(lcd);
     } // print(lcd)
 };
 

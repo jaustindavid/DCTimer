@@ -34,7 +34,7 @@ Switch switches[2];
 
 
 #include "Schedule.h"
-// Schedule schedules[2];
+Schedule schedule;
 
 
 
@@ -57,6 +57,8 @@ void setup(void) {
   setupDisplay();
   lcd_cursor(0,0);
   lcd_print("BioQuip DC Timer");
+  lcd_cursor(0,1);
+  lcd.print(freeMemory());
   delay(2000);
   
   rtc.set(153);
