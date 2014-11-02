@@ -21,20 +21,23 @@ class RTC {
     
   
     void set(unsigned long now) {
-      start = now;
+      Serial.print("RTC->set(");
+      Serial.print(now);
+      Serial.println(")");
+      start = now - (millis()/1000L);
     } // set(unsigned long now)
     
     
     unsigned long time(void) {
-      return start + millis()/10;
+      return (start + millis()/1000L) % (24L*3600L);
     } // unsigned long time()
     
     
     void print(Adafruit_RGBLCDShield lcd) {
-      Time temp;
-      temp.set(time());
-      temp.print(lcd);
+      Time *temp = new Time();
+      temp->set(time());
+      temp->print(lcd);
     } // print(lcd)
 };
 
-#endif RTC_H
+#endif

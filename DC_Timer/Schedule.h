@@ -13,19 +13,19 @@
 class Schedule {
   private:
     byte id;
-    Time* on, off;
     
   public:
+    Time *on, *off;
+ 
     Schedule() {
-      on = new Time(8, 00);
-      /*
-      on = .set(8, 00);
-      off.set(16, 00);
-      */
+      on  = new Time(8, 00);
+      off = new Time(16,00);
     } // constructor
     
     boolean isOn() {
     } // boolean isOn()
+    
+    
 };
 
 

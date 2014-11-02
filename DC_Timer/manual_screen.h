@@ -14,9 +14,9 @@ void print_manual_screen(byte which) {
   
   lcd_cursor(0,1);
   lcd.print("  A ");
-  switches[SWITCH_A].print();
+  switches[SWITCH_A]->print();
   lcd.print("   B ");
-  switches[SWITCH_B].print();
+  switches[SWITCH_B]->print();
   if (which == SWITCH_A) {
     lcd_cursor(4,1);
     lcd.blink();
@@ -40,7 +40,7 @@ void manual_screen() {
     if (button == BUTT_UP || button == BUTTON_DOWN) {
       which = which == SWITCH_A ? SWITCH_B : SWITCH_A;      
     } else if (button == BUTT_SET) {
-      switches[which].toggle();
+      switches[which]->toggle();
     }
   } while (button != BUTT_MODE);
   

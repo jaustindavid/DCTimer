@@ -9,25 +9,42 @@
 
 class Switch {
   private:
-    byte pin;
-    byte state;
+    byte _pin;
+    byte _state;
     
   public:
-    Switch() {
+    Switch(byte pin) {
+      setup(pin);
     } // constructor
     
-    void setup(int newPin) {
-      pin = newPin;
-      state = LOW;
+    void setup(byte pin) {
+      _pin = pin;
+      _state = LOW;
     } // setup(newPin)
     
     
     void toggle() {
-      state = !state;
+      set(!_state);
     } // toggle()
     
+    
+    void set(boolean state) {
+      Serial.print("Switch[");
+      Serial.print(_pin);
+      Serial.print("]->set(");
+      Serial.print(state);
+      Serial.println(")");
+      
+      _state = state;
+    } // set(state)
+    
+    
+    boolean get() {
+      return _state;
+    }
+    
     void print() {
-      if (state) {
+      if (_state) {
         lcd.print("ON ");
       } else {
         lcd.print("OFF");

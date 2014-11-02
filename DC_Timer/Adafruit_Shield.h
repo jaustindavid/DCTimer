@@ -52,7 +52,13 @@ void lcd_print(const char* input) {
 static byte pushed_button = BUTT_NONE;
 void unget_button(byte button) {
   pushed_button = button;
-}
+} // unget_button(byte button)
+
+
+static byte _last_button = BUTT_NONE;
+byte last_button() {
+  return _last_button;
+} // byte peek_button()
 
 
 byte get_button(int timeout_ms) {
@@ -62,30 +68,32 @@ byte get_button(int timeout_ms) {
     Serial.println("pushing ur buttons");
     button = pushed_button;
     pushed_button = BUTT_NONE;
-    return button;
-  }
-  Serial.println("starting read");
-  while (! timer.isExpired() && !button) {
-    button = lcd.readButtons();   
-  } // while (! timer.isExpired())
-
-  if (button) {
-    Serial.print("Got ");
-    Serial.println(button);
-    
-    // debounce
-    while (! timer.isExpired() && lcd.readButtons());   
-  } // while (! timer.isExpired())
-     
-  byte butt = 0;
-  switch(button) {
-    case 2:  button = BUTT_SET; break;
-    case 4:  button = BUTT_DOWN; break;
-    case 8:  button = BUTT_UP; break;
-    case 16: button = BUTT_MODE; break;
-  } // switch(button)
+  } else {
+    Serial.println("starting read");
+    while (! timer.isExpired() && !button) {
+      button = lcd.readButtons();   
+    } // while (! timer.isExpired())
   
+    if (button) {
+      Serial.print("Got ");
+      Serial.println(button);
+      
+      // debounce
+      while (! timer.isExpired() && lcd.readButtons());   
+    } // while (! timer.isExpired())
+       
+    byte butt = 0;
+    switch(button) {
+      case 2:  button = BUTT_SET; break;
+      case 4:  button = BUTT_DOWN; break;
+      case 8:  button = BUTT_UP; break;
+      case 16: button = BUTT_MODE; break;
+    } // switch(button)
+  } // if (pushed_button)
+  
+  _last_button = button;
   return button;
-}
+} // byte get_button(int timeout_ms)
 
-#endif
+
+#endif // def ADAFRUIT_SHIELD_H

@@ -30,22 +30,36 @@ RTC rtc;
 
 
 #include "Switch.h"
-Switch switches[2];
+Switch* switches[2];
 
 
 #include "Schedule.h"
-Schedule schedule;
+Schedule* schedules[2];
 
 
-
-#define MANUAL_SCREEN   1
-#define AUTO_SCREEN     2
+#define FIRST_SCREEN    1
+#define AUTO_SCREEN     1
+#define MANUAL_SCREEN   2
 #define SCHEDULE_SCREEN 3
+#define TIME_SCREEN     4
+#define NUM_SCREENS     4
 byte screen = AUTO_SCREEN;
 
-
-#include "manual_screen.h"
+ 
 #include "auto_screen.h"
+#include "manual_screen.h"
+#include "schedule_screen.h"
+#include "time_set_screen.h"
+
+
+
+void setupSwitches() {
+  for (byte i = 0; i < 2; i ++) {
+    switches[i] = new Switch(i);
+    schedules[i] = new Schedule();
+  }
+}
+
 
 
 
@@ -55,9 +69,11 @@ void setup(void) {
   Serial.println("Starting up!");
 #endif
   setupDisplay();
+  setupSwitches();
   lcd_cursor(0,0);
   lcd_print("BioQuip DC Timer");
   lcd_cursor(0,1);
+  lcd.print("Free mem: ");
   lcd.print(freeMemory());
   delay(2000);
   
@@ -82,10 +98,9 @@ void loop(void) {
     Serial.print("mode!  screen=");
     Serial.println(screen);
     lcd.clear();
-    if (screen == MANUAL_SCREEN) {
-      screen = AUTO_SCREEN;
-    } else {
-      screen = MANUAL_SCREEN;
+    screen ++;
+    if (screen > NUM_SCREENS) {
+      screen = FIRST_SCREEN;
     }
   } else if (button == BUTT_SET) {
   }
@@ -95,6 +110,10 @@ void loop(void) {
       manual_screen();
       break;
     case SCHEDULE_SCREEN:
+      schedule_screen();
+      break;
+    case TIME_SCREEN:
+      time_set_screen();
       break;
     default:
       auto_screen();
@@ -110,3 +129,4 @@ void loop(void) {
   Serial.print("button: ");
   Serial.println(button);
 }
+
